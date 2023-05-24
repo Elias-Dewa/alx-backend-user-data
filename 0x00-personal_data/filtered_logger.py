@@ -11,5 +11,6 @@ def filter_datum(fields: List[str],
                  separator: str):
     """Define a method  that returns the log message obfuscated"""
     for field in fields:
-        message = re.sub(field + "=.*" + separator,
-                         field + "=" + redaction, message)
+        message = re.sub(field + "=.*?" + separator,
+                         field + "=" + separator + redaction,
+                         message)
