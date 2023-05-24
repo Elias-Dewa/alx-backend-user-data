@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""_summary_"""
+"""Function  that returns the log message obfuscated"""
 
 import re
 from typing import List
@@ -14,3 +14,4 @@ def filter_datum(fields: List[str],
         message = re.sub(field + "=.*?" + separator,
                          field + "=" + separator + redaction,
                          message)
+    return message
