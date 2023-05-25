@@ -58,7 +58,28 @@ def get_db() -> connection.MySQLConnection:
     password = environ.get("PERSONAL_DATA_DB_PASSWORD", "")
     db_host = environ.get("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = environ.get("PERSONAL_DATA_DB_NAME")
-    connector = connection.MySQLConnection(
+    return connection.MySQLConnection(
         user=username, password=password, host=db_host, database=db_name
     )
-    return connector
+
+
+def main():
+    """obtain a database connection using get_db and retrieve all rows in
+    the users table and display each row under a filtered format"""
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    logger = get_logger()
+
+    headers = [field[0] for field in cursor.description]
+
+    data = []
+    for row in cursor:
+        row_data = f"name={row[0]}; email={row[1]}; phone={row[2]}; " \
+            f"ssn={row[3]}; password={row[4]}; ip={row[5]}; " \
+            f"last_login={row[6]}; user_agent={row[7]};"
+        data.append(row_data)
+    for _ in data:
+        logger.info(data)
+    cursor.close()
+    db.close()
