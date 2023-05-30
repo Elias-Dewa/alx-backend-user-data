@@ -16,7 +16,7 @@ class Auth():
             if element.endswith("*"):
                 if path.startswith(element[0:1]):
                     return False
-        if path in excluded_paths:
+        if path in excluded_paths or f'{path}/' in excluded_paths:
             return False
         return True
 
