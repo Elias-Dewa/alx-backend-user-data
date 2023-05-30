@@ -5,15 +5,21 @@ from flask import jsonify, abort
 from api.v1.views import app_views
 
 
-@app_views.route('/unauthorized', methods=['GET'])
+@app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 def unauthorized() -> str:
-    """the error handler for 401"""
+    """ GET /api/v1/unauthorized
+    Return:
+      - an unauthorized of the API
+    """
     abort(401)
 
 
-@app_views.route('/forbidden', methods=['GET'])
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden() -> str:
-    """the error handler for 403"""
+    """ GET /api/v1/forbidden
+    Return:
+      - the forbidden of the API
+    """
     abort(403)
 
 
