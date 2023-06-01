@@ -8,7 +8,7 @@ from api.v1.views import app_views
 
 
 @app_views.route('/auth_session/login', methods=['POST'])
-def login():
+def login() -> str:
     """method to handles login routes for the Session authentication"""
     usr_email = request.form.get('email')
     usr_password = request.form.get('password')
