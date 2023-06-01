@@ -36,6 +36,6 @@ def login() -> str:
 def logout(self, request=None):
     """method to handles logout routes to delete Session"""
     from api.v1.app import auth
-    if not auth.destroy_session(request):
-        return False, abort(404)
+    if auth.destroy_session(request) is False:
+        abort(404)
     return jsonify({}), 200
