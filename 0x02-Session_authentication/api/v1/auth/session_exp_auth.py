@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Define a class SessionExpAuth that inherits from SessionAuth"""
-import datetime
+from datetime import datetime, timedelta
 from os import getenv
 from api.v1.auth.session_auth import SessionAuth
 
@@ -32,24 +32,25 @@ class SessionExpAuth(SessionAuth):
 
     def user_id_for_session_id(self, session_id=None):
         """Return the session id associated"""
-        if session_id is None:
+        if not session_id:
             return None
 
         session_dict = self.user_id_by_session_id.get(session_id)
-        if session_dict is None:
+        if not session_dict:
             return None
 
         user_id = session_dict.get('user_id')
-        if user_id is None:
+        if not user_id:
             return None
 
         if self.session_duration <= 0:
             return user_id
 
         created_time = session_dict.get('created_at')
-        if created_time is None:
+        if not created_time:
             return None
-        if datetime.now() > created_time + datetime.timedelta(
+
+        if datetime.now() > created_time + timedelta(
                 seconds=self.session_duration):
             return None
         return user_id
