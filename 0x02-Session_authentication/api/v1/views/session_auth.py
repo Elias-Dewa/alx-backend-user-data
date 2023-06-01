@@ -33,7 +33,7 @@ def login() -> str:
 
 
 @app_views.route('/auth_session/logout', methods=['DELETE'])
-def logout(self, request=None) -> str:
+def logout(self, request=None):
     """method to handles logout routes to delete Session"""
     from api.v1.app import auth
     if not auth.destroy_session(request):
