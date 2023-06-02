@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """a class to manage the API authentication"""
 
-from os import getenv
 from typing import List, TypeVar
 from flask import request
 
@@ -11,11 +10,11 @@ class Auth():
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """returns False - path and excluded_paths"""
-        if excluded_paths is None or not len(excluded_paths) or not path:
+        if not excluded_paths or not len(excluded_paths) or not path:
             return True
         for element in excluded_paths:
             if "*" in element:
-                if path.startswith(element[0:1]):
+                if path.startswith(element.replace("*", "")):
                     return False
         if path in excluded_paths or f'{path}/' in excluded_paths:
             return False
@@ -29,10 +28,3 @@ class Auth():
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None - request will be the Flask request object"""
         return None
-
-    def session_cookie(self, request=None):
-        """returns a cookie value from a request"""
-        if request is None:
-            return None
-        session_name = getenv('SESSION_NAME')
-        return request.cookies.get(session_name)
