@@ -36,6 +36,6 @@ def login() -> str:
 @app_views.route('/auth_session/logout', methods=['DELETE'])
 def logout(self, request=None):
     """method to handles logout routes to delete Session"""
-    if auth.destroy_session(request) is False:
-        abort(404)
-    return jsonify({}), 200
+    if auth.destroy_session(request):
+        return jsonify({}), 200
+    abort(404)
