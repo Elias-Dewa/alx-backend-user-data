@@ -39,5 +39,8 @@ class SessionAuth(Auth):
         usr_id = self.user_id_for_session_id(session_id)
         if not session_id or not usr_id:
             return False
-        del self.user_id_by_session_id[session_id]
+        try:
+            del self.user_id_by_session_id[session_id]
+        except Exception:
+            pass
         return True
