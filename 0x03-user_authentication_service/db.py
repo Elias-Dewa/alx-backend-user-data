@@ -5,9 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from user import User
-
-from user import Base
+from user import User, Base
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class DB:
@@ -36,4 +36,14 @@ class DB:
         user = User(email=email, hashed_password=hashed_password)
         self.__session.add(user)
         self.__session.commit()
+        return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """method takes in arbitrary keyword arguments and
+        returns the first row found in the users table"""
+        if not kwargs:
+            raise InvalidRequestError
+        user = self.__session.query(User).filter_by(**kwargs)
+        if not user:
+            raise NoResultFound
         return user
