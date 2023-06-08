@@ -60,6 +60,16 @@ class Auth:
         except NoResultFound:
             return None
 
+    def destroy_session(self, user_id: str) -> None:
+        """a method that deletes the corresponding session"""
+        if not user_id:
+            return None
+        try:
+            user = self._db.find_user_by(id=user_id)
+            self._db.update_user(user.id)
+        except NoResultFound:
+            return None
+
 
 def _generate_uuid() -> str:
     """generates a random uuid"""
