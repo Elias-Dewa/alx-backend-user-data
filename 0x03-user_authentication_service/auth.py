@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Auth module"""
+from typing import Union
 from uuid import uuid4
 from bcrypt import hashpw, gensalt, checkpw
 
@@ -47,6 +48,15 @@ class Auth:
             uuid = _generate_uuid()
             self._db.update_user(user.id, session_id=uuid)
             return uuid
+        except NoResultFound:
+            return None
+
+    def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
+        """a method that returns the corresponding User or None"""
+        if not session_id:
+            return None
+        try:
+            return self._db.find_user_by(session_id=session_id)
         except NoResultFound:
             return None
 
