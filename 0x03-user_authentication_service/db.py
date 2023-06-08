@@ -32,14 +32,12 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """Add a user to the database
-        Return:
-            User object
+        """Add a user to the database and return User object
         """
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
+        usr = User(email=email, hashed_password=hashed_password)
+        self._session.add(usr)
         self._session.commit()
-        return user
+        return usr
 
     def find_user_by(self, **kwargs) -> User:
         """method takes in arbitrary keyword arguments and
