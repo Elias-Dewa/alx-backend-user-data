@@ -15,15 +15,12 @@ def home():
 
 
 @app.route('/users', methods=['POST'])
-def users():
-    try:
-        email = request.form['email']
-        password = request.form['password']
-    except KeyError:
-        abort(400)
+def create_user():
+    email = request.form.get('email')
+    password = request.form.get('password')
 
     try:
         user = AUTH.register_user(email, password)
+        return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
-    return jsonify({"email": email, "message": "password already registered"})
