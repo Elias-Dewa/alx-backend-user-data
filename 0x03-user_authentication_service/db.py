@@ -51,9 +51,9 @@ class DB:
     def update_user(self, user_id: int, **kwargs) -> None:
         """method that takes as argument a required user_id integer and
         arbitrary keyword arguments, and returns None"""
-        _id = self.find_user_by(id=user_id)
+        user = self.find_user_by(id=user_id)
         for k, v in kwargs.items():
-            if not hasattr(_id, k):
+            if not hasattr(user, k):
                 raise ValueError
-            setattr(_id, k, v)
+            setattr(user, k, v)
         self._session.commit()
