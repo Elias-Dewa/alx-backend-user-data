@@ -77,7 +77,7 @@ class Auth:
             raise ValueError
 
         reset = _generate_uuid()
-        self._db.update_user(user.id, reset=reset)
+        self._db.update_user(user.id, reset_token=reset)
         return reset
 
 
