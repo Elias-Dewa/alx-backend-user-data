@@ -45,11 +45,12 @@ class Auth:
         the session ID as a string"""
         try:
             user = self._db.find_user_by(email=email)
-            uuid = _generate_uuid()
-            self._db.update_user(user.id, session_id=uuid)
-            return uuid
         except NoResultFound:
             return None
+
+        uuid = _generate_uuid()
+        self._db.update_user(user.id, session_id=uuid)
+        return uuid
 
     def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
         """a method that returns the corresponding User or None"""
@@ -79,6 +80,18 @@ class Auth:
         reset = _generate_uuid()
         self._db.update_user(user.id, reset_token=reset)
         return reset
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """Update the password of the user with the given password"""
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+        except NoResultFound:
+            raise ValueError
+
+        hashed_pw = _hash_password(password)
+        self._db.update_user(user.id,
+                             hashed_password=hashed_pw,
+                             reset_token=None)
 
 
 def _generate_uuid() -> str:
