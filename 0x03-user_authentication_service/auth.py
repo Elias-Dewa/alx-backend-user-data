@@ -40,6 +40,6 @@ class Auth:
         return False
 
 
-def _generate_uuid():
+def _generate_uuid() -> str:
     """generates a random uuid"""
     return str(uuid4())
