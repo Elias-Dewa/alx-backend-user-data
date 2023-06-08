@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """DB module
 """
-from typing import TypeVar
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -32,7 +31,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Add a user to the database and return User object
         """
         user = User(email=email, hashed_password=hashed_password)
@@ -40,4 +39,14 @@ class DB:
         self._session.add(user)
         self._session.commit()
 
+        return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """method takes in arbitrary keyword arguments and
+        returns the first row found in the users table"""
+        if not kwargs:
+            raise InvalidRequestError
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if not user:
+            raise NoResultFound
         return user
